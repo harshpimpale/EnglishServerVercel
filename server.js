@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
@@ -11,6 +12,9 @@ const ServerPort = 3000 | process.env.Port;
 
 // Use bodyParser middleware to parse JSON requests
 app.use(bodyParser.json());
+
+// Use CORS middleware to enable CORS for all routes
+app.use(cors());
 
 app.get('/', (req,res) => {
     res.json({
