@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Brave Extension</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f8f8f8;
+      color: #333;
+      font-family: "Roboto Mono", monospace;
+    }
+    #password-generator {
+      width: 300px;
+      height: 400px;
+      margin: 20px auto;
+      background: #f5f5dc;
+      border-radius: 5px;
+      box-shadow: 0 0 10px 2px #5f9ea0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #copy {
+      position: relative;
+      width: 80px;
+      height: 40px;
+      padding: 5px;
+      font-size: 16px;
+      text-align: center;
+      background: #7fffd4;
+      border: none;
+      border-radius: 5px;
+      transition: all 0.4s linear;
+      margin: 10px auto;
+      display: block;
+    }
+    #copy:hover {
+      cursor: pointer;
+      box-shadow: 0 0 10px 2px #5f9ea0;
+      transition: all 0.4s linear;
+    }
+    #password {
+      width: 90%;
+      height: 100px;
+      background: #dcdcdc;
+      border: none;
+      border-radius: 10px;
+      margin: 0 10px;
+      padding: 5px;
+      font-size: 16px;
+    }
+    #pass-len {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+    }
+    #pass-length {
+      width: 80%;
+      margin: 10px;
+    }
+    #pass-len span {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      background: #dcdcdc;
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.5;
+      border-radius: 5px;
+    }
+    .buttons {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 100%;
+      height: 30px;
+      margin-top: 10px;
+    }
+    .btn {
+      width: 40%;
+      height: 30px;
+      font-size: 18px;
+      border: none;
+      transition: all 0.4s linear;
+    }
+    .btn:hover {
+      cursor: pointer;
+      box-shadow: 0 0 10px 2px #5f9ea0;
+      transition: all 0.4s linear;
+    }
+    #reset-form {
+      background: #b22222;
+      color: #fff;
+    }
+    #generate {
+      background: #7fffd4;
+      color: #000;
+    }
+    #meaning-modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+    #modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 300px;
+      text-align: center;
+      border-radius: 10px;
+    }
+    #close-modal {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    #close-modal:hover,
+    #close-modal:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+    <section id="password-generator">
+        <h1>Line Generator</h1>
+        <form id="form">
+          <button type="button" id="copy">Meaning</button>
+          <textarea id="password" rows="4" cols="50"></textarea>
+          <br><br>
+          <label for="pass-length" id="pass-len">
+            <input type="range" id="pass-length" min="4" max="12" step="1" value="6" />
+            <span class="display-len">6</span></label>
+           <br>
+          <div class="buttons">
+            <button type="reset" id="reset-form" class="btn">Reset</button>
+            <button type="button" id="generate" class="btn">Generate</button>
+          </div>
+        </form>
+      </section>
+      <div id="meaning-modal">
+        <div id="modal-content">
+          <span id="close-modal">&times;</span>
+          <p id="modal-meaning"></p>
+        </div>
+      </div>
+      <script src="main.js"></script>
+</body>
+</html>
