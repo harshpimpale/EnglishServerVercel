@@ -7,7 +7,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 require('dotenv').config()
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenerativeAI, GenerationConfig } = require("@google/generative-ai");
 
 const GeminiKey = process.env.GEMINI_KEY;
 const ServerPort = 3000 | process.env.Port;
@@ -46,6 +46,29 @@ app.get('/means/:word/:line', async(req,res) => {
     });
 })
 
+app.get('/diffword/:word1/:word2', async(req,res) => {
+
+    let word1 = req.params['word1'];
+    let word2 = req.params['word2'];
+
+    console.log(req.params['word1']);
+    console.log(req.params['word2']);
+
+    const prompt = prompting_diffCheck(word1, word2);
+    const dati = await run(prompt);
+    const data = JSON.parse(getSubstringBetweenBraces(dati));
+
+    console.log(data);
+
+    // Respond with the generated line and meaning
+    res.json({
+      // meaning1: data.word1,
+      // meaning2: data.word2,
+      line1: data.line1,
+      line2: data.line2
+    });
+})
+
 app.post('/meaning', async(req, res) => {
     const { word, length } = req.body;
     console.log(word, length);
@@ -78,7 +101,11 @@ async function run(prop) {
 
   const prompt = prop;
 
-  const result = await model.generateContent(prompt);
+  const generationConfig = {
+    response_mime_type: "application/json"
+  };
+
+  const result = await model.generateContent(prompt, generationConfig);
   const response = await result.response;
   const text = response.text();
   console.log(text);
@@ -88,6 +115,12 @@ async function run(prop) {
 
 function prompting(word, count){
     prompt = `Give me in Json format for key "line" output as make a sentence using '${word}' in ${count} words, and for key "meaning" write meaning for this '${word}'. write only json format`;
+    return prompt;
+}
+
+function prompting_diffCheck(word1, word2){
+    // prompt = `I want difference in '${word1}' and '${word2}', tell me how they are different, Output in json so for key 'word1' meaning of '${word1}' diff from '${word2}' and for key 'word2' meaning of '${word2}' diff from '${word1}', and key 'line1' for make sentence using '${word1}' and key 'line2' for make sentence using '${word2}'   ` ;
+    prompt = `I want difference in '${word1}' and '${word2}', tell me how they are different, and dont make bold, Output in json so key 'line1' tell me meaning of '${word1}' different from '${word2}' and example in same string and key 'line2' tell me meaning of '${word2}' different from '${word1}' and example in same string  ` ;
     return prompt;
 }
 
